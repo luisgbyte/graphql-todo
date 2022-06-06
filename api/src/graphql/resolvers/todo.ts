@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
-import { todos } from '../models';
+import { todos } from '../mocks';
+import Todo from '../models/todo';
 
 const todo = {
   Query: {
@@ -11,6 +12,10 @@ const todo = {
       const { title, description, userId } = args;
 
       const id = uuidv4();
+
+      const todo = new Todo({ id: id, title: 'Tarefa', description: "desc", completed: false })
+
+      todo.save()
 
       const novo = {
         id,

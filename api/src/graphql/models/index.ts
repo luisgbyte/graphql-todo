@@ -1,43 +1,16 @@
+import { Sequelize } from 'sequelize-typescript'
 
-const users = [
-  {
-    id: '1',
-    name: 'Luis',
-    email: 'lg@email.com',
-    password: "123456",
-    todos: [1, 2]
-  },
-  {
-    id: '2',
-    name: 'John',
-    email: "jj@email.com",
-    password: "123456",
-    todos: [3]
-  }
-];
+import Todo from './todo'
+import User from './user'
 
-const todos = [
-  {
-    id: '1',
-    title: 'Limpar a casa',
-    description: 'Descrição Todo aqui...',
-    completed: false,
-    userId: 1,
-  },
-  {
-    id: '2',
-    title: 'Trabalho faculdade',
-    description: 'Descrição Todo aqui...',
-    completed: false,
-    userId: 1,
-  },
-  {
-    id: '3',
-    title: 'Lavar a roupa',
-    description: 'Descrição Todo aqui...',
-    completed: false,
-    userId: 2,
-  }
-];
+const sequelize = new Sequelize({
+  database: 'task',
+  dialect: 'postgres',
+  username: 'postgres',
+  password: 'graphql',
+  host: 'localhost',
+  port: 5432,
+  models: [__dirname + [Todo, User]] // or [Player, Team],
+})
 
-export { todos, users }
+export default sequelize

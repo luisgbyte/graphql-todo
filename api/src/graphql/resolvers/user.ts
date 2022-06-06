@@ -1,12 +1,15 @@
-import { todos, users } from '../models'
+import { todos, users } from '../mocks'
 import { v4 as uuidv4 } from 'uuid';
 
 const user = {
   Query: {
-    users: () => users,
-    user(_: any, { id }: any) {
-      let res = users.filter((u) => u.id == id)
-      return res ? res[0] : null
+    // users: () => users,
+    // user(_: any, { id }: any) {
+    //   let res = users.filter((u) => u.id == id)
+    //   return res ? res[0] : null
+    // },
+    users: async (parent: any, args: any, { models }: any) => {
+      return await models.user.findAll();
     },
   },
   Mutation: {
