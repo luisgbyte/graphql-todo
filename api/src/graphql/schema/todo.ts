@@ -7,14 +7,14 @@ export default gql`
 
   type Todo {
     id: ID
-    title: String!
-    description: String!
-    completed: Boolean!
-    user: User!
+    title: String
+    description: String
+    completed: Boolean
+    user: User
   }
 
   type Mutation {
-    createTodo(title: String, description: String, userId: ID): Todo!
+    createTodo(title: String, description: String, userId: ID!): Todo!
     deleteTodo(id: ID!): Todo
     updateTodo(id: ID!, title: String, description: String, completed: Boolean): Todo
   }

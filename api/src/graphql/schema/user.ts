@@ -8,15 +8,16 @@ export default gql`
 
   type User {
     id: ID
-    name: String!
-    email: String!
-    password: String!
+    name: String
+    email: String
+    password: String
     todos: [Todo!] 
   }
 
   type Mutation {
-    createUser(name: String, email: String, password: String): User!
+    createUser(name: String, email: String, password: String, todos: [ID!]): User!
     deleteUser(id: ID!): User
     updateUser(id: ID!, name: String, email: String, password: String): User
+    userTodo(id: ID!): [Todo!]
   }
 `;

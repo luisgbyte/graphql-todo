@@ -1,68 +1,65 @@
-import { todos, users } from '../mocks'
-import { v4 as uuidv4 } from 'uuid';
 
 const user = {
   Query: {
-    // users: () => users,
-    // user(_: any, { id }: any) {
-    //   let res = users.filter((u) => u.id == id)
-    //   return res ? res[0] : null
-    // },
+    // SHOW USER FOR ID
+    user: async (parent: any, args: any, { models }: any) => {
+      return await models.User.findByPk(args.id);
+    },
+
+    // SHOW ALL USERS
     users: async (parent: any, args: any, { models }: any) => {
-      return await models.user.findAll();
+      return await models.User.findAll();
     },
   },
   Mutation: {
-    // CREATE
-    createUser: (_: any, args: any) => {
+    // CREATE USER
+    createUser: async (_: any, args: any, { models }: any) => {
       const { name, email, password } = args;
 
-      const id = uuidv4();
-
-      const newUser = {
-        id,
-        name,
-        email,
-        password,
-        todos: []
-      };
-
-      users.push(newUser)
-      return newUser
-    },
-    // DELETE
-    deleteUser: (_: any, { id }: any) => {
-      const i = users.findIndex(u => u.id === id)
-
-      if (i < 0) return null
-
-      const remove = users.splice(i, 1)
-
-      return remove ? remove[0] : null
-    },
-    // UPDATE
-    updateUser: (_: any, args: any) => {
-      const { id } = args;
-
-      const i = users.findIndex(u => u.id == id)
-
-      if (i < 0) return null
-
-      const newUser = {
-        ...users[i],
-        ...args
+      try {
+        return await models.User.create({
+          name,
+          email,
+          password,
+        });
+      } catch (error: any) {
+        throw new Error(error);
       }
-
-      users.splice(i, 1, newUser)
-
-      return newUser
     },
-  },
-  User: {
-    todos(user: any) {
-      return todos.filter(
-        todo => todo.userId === user.id,
-      );
+
+    // DELETE
+    deleteUser: async (_: any, { id }: any, { models }: any) => {
+      return await models.User.destroy({ where: { id } });
+    },
+
+    // UPDATE
+    updateUser: async (_: any, args: any, { models }: any) => {
+      const { id, name, email, password } = args;
+
+      try {
+        await models.User.update({
+          name,
+          email,
+          password,
+        }, {
+          where: {
+            id: id
+          }
+        });
+
+        return { ...args }
+      } catch (error: any) {
+        throw new Error(error);
+      }
+    },
+
+    // LIST ALL 'TODOS' FOR USERID
+    userTodo: async (_: any, { id }: any, { models }: any) => {
+      return await models.Todo.findAll({
+        where: {
+          userId: id,
+        },
+      });
     }
   },
 }

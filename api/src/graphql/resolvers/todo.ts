@@ -1,61 +1,51 @@
-import { v4 as uuidv4 } from 'uuid';
 import { todos } from '../mocks';
-import Todo from '../models/todo';
 
 const todo = {
   Query: {
-    todos: () => todos,
+    // SHOW ALL TODOS
+    todos: async (parent: any, args: any, { models }: any) => {
+      return await models.Todo.findAll();
+    },
   },
   Mutation: {
     // CREATE
-    createTodo: (_: any, args: any) => {
+    createTodo: async (_: any, args: any, { models }: any) => {
       const { title, description, userId } = args;
 
-      const id = uuidv4();
-
-      const todo = new Todo({ id: id, title: 'Tarefa', description: "desc", completed: false })
-
-      todo.save()
-
-      const novo = {
-        id,
-        title,
-        description,
-        completed: false,
-        userId
-      };
-
-      todos.push(novo)
-      return novo
+      try {
+        return await models.Todo.create({
+          title,
+          description,
+          userId,
+        });
+      } catch (error: any) {
+        throw new Error(error);
+      }
     },
 
     // DELETE
-    deleteTodo: (_: any, { id }: any) => {
-      const i = todos.findIndex(t => t.id === id)
-
-      if (i < 0) return null
-
-      const remove = todos.splice(i, 1)
-
-      return remove ? remove[0] : null
+    deleteTodo: async (_: any, { id }: any, { models }: any) => {
+      return await models.Todo.destroy({ where: { id } });
     },
 
     // UPDATE
-    updateTodo: (_: any, args: any) => {
-      const { id } = args;
+    updateTodo: async (_: any, args: any, { models }: any) => {
+      const { id, title, description } = args;
 
-      const i = todos.findIndex(t => t.id == id)
+      try {
+        await models.Todo.update({
+          title,
+          description,
+        }, {
+          where: {
+            id: id
+          }
+        });
 
-      if (i < 0) return null
-
-      const newTodo = {
-        ...todos[i],
-        ...args
+        return { ...args }
+      } catch (error: any) {
+        throw new Error(error);
       }
-
-      todos.splice(i, 1, newTodo)
-
-      return newTodo
     },
   }
 }

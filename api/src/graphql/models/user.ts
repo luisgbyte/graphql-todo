@@ -1,8 +1,8 @@
-import { Table, Column, Model, HasMany } from 'sequelize-typescript'
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt } from 'sequelize-typescript'
 
 import todo from './todo'
 
-interface UserAttributes {
+interface IUserAttributes {
   id: number
   name: string
   email: string
@@ -10,21 +10,29 @@ interface UserAttributes {
 }
 
 @Table
-class User extends Model<UserAttributes>{
+class User extends Model<IUserAttributes>{
+  @PrimaryKey
+  @AutoIncrement
   @Column
+  id: number
+
+  @Column({ allowNull: false })
   name: string
 
-  @Column
+  @Column({ allowNull: false, unique: true })
   email: string
 
-  @Column
+  @Column({ allowNull: false })
   password: string
 
-  @Column
-  completed: boolean
+  @HasMany(() => todo, 'userId')
+  todos: todo[]
 
-  @HasMany(() => todo)
-  user: todo[]
+  @CreatedAt
+  creationDate: Date;
+
+  @UpdatedAt
+  updatedOn: Date;
 }
 
 export default User

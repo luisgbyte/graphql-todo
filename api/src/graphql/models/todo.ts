@@ -1,8 +1,8 @@
-import { Table, Column, Model, HasOne } from 'sequelize-typescript'
+import { Table, Column, Model, PrimaryKey, BelongsTo, AutoIncrement, CreatedAt, UpdatedAt, ForeignKey } from 'sequelize-typescript'
 
 import user from './user'
 
-interface TodoAttributes {
+interface ITodoAttributes {
   id: string
   title: string
   description: string
@@ -10,18 +10,33 @@ interface TodoAttributes {
 }
 
 @Table
-class Todo extends Model<TodoAttributes>{
+class Todo extends Model<ITodoAttributes>{
+  @PrimaryKey
+  @AutoIncrement
   @Column
+  id: number
+
+  @Column({ allowNull: false })
   title: string
 
-  @Column
+  @Column({ allowNull: false })
   description: string
 
-  @Column
+  @Column({ defaultValue: false })
   completed: boolean
 
-  @HasOne(() => user)
-  userId: user
+  @ForeignKey(() => user)
+  @Column
+  userId: number
+
+  @BelongsTo(() => user, 'userId')
+  user: user
+
+  @CreatedAt
+  creationDate: Date;
+
+  @UpdatedAt
+  updatedOn: Date;
 }
 
 export default Todo
