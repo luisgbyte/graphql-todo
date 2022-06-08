@@ -1,4 +1,3 @@
-import { todos } from '../mocks';
 
 const todo = {
   Query: {
