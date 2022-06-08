@@ -1,4 +1,5 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt } from 'sequelize-typescript'
+import isEmail from 'validator/lib/isEmail'
 
 import todo from './todo'
 
@@ -16,13 +17,15 @@ class User extends Model<IUserAttributes>{
   @Column
   id: number
 
-  @Column({ allowNull: false })
+  @Column({
+    allowNull: false, validate: { len: [4, 50] }
+  })
   name: string
 
-  @Column({ allowNull: false, unique: true })
+  @Column({ allowNull: false, unique: true, validate: { isEmail: true } })
   email: string
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { len: [7, 42] } })
   password: string
 
   @HasMany(() => todo, 'userId')

@@ -16,10 +16,10 @@ class Todo extends Model<ITodoAttributes>{
   @Column
   id: number
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { len: [1, 25] } })
   title: string
 
-  @Column({ allowNull: false })
+  @Column({ allowNull: false, validate: { len: [1, 50] } })
   description: string
 
   @Column({ defaultValue: false })
