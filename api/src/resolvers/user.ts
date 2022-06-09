@@ -1,6 +1,11 @@
 import { AuthenticationError, UserInputError } from 'apollo-server';
+
+import { combineResolvers } from 'graphql-resolvers';
+import { isAuthenticated } from './authorization';
+
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
+
 
 const createToken = async (user: any, secret: string, expiresIn: string) => {
   const { id, email, name } = user;
@@ -11,16 +16,6 @@ const createToken = async (user: any, secret: string, expiresIn: string) => {
 };
 
 const user = {
-  Query: {
-    // SHOW USER FOR ID
-    user: async (parent: any, args: any, { models }: any) => {
-      return await models.User.findByPk(args.id);
-    },
-    // SHOW ALL USERS
-    users: async (parent: any, args: any, { models }: any) => {
-      return await models.User.findAll();
-    },
-  },
   User: {
     // LIST 'TODOS' IN USER
     todo: async (parent: any, args: any, { models }: any) => {
@@ -33,29 +28,31 @@ const user = {
   },
   Mutation: {
     // DELETE
-    deleteUser: async (_: any, { id }: any, { models }: any) => {
-      return await models.User.destroy({ where: { id } });
-    },
+    deleteUser: combineResolvers(isAuthenticated,
+      async (_: any, { id }: any, { models }: any) => {
+        return await models.User.destroy({ where: { id } });
+      }),
     // UPDATE
-    updateUser: async (_: any, args: any, { models }: any) => {
-      const { id, name, email, password } = args;
+    updateUser: combineResolvers(isAuthenticated,
+      async (_: any, args: any, { models }: any) => {
+        const { id, name, email, password } = args;
 
-      try {
-        await models.User.update({
-          name,
-          email,
-          password,
-        }, {
-          where: {
-            id: id
-          }
-        });
+        try {
+          await models.User.update({
+            name,
+            email,
+            password,
+          }, {
+            where: {
+              id: id
+            }
+          });
 
-        return { ...args }
-      } catch (error: any) {
-        throw new Error(error);
-      }
-    },
+          return { ...args }
+        } catch (error: any) {
+          throw new Error(error);
+        }
+      }),
     // SIGN-UP
     signUp: async (parent: any, { name, email, password }: any, { models, secret
     }: any) => {
