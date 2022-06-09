@@ -19,9 +19,9 @@ export default gql`
   }
 
   type Mutation {
-    createUser(name: String, email: String, password: String, todos: [ID!]): User!
     deleteUser(id: ID!): User
     updateUser(id: ID!, name: String, email: String, password: String): User
     signUp(name: String!, email: String!, password: String!): Token!
+    signIn(email: String!, password: String!): Token!
   }
 `;

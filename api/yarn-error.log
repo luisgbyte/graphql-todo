@@ -1,8 +1,8 @@
 Arguments: 
-  /home/luis/.nvm/versions/node/v14.17.1/bin/node /home/luis/.nvm/versions/node/v14.17.1/bin/yarn add -D @types-jsonwebtoken
+  /home/luis/.nvm/versions/node/v14.17.1/bin/node /home/luis/.nvm/versions/node/v14.17.1/bin/yarn add -D @types/bcrypt
 
 PATH: 
-  /home/luis/.nvm/versions/node/v14.17.1/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:Por favor, pergunte seu administrador.:/home/luis/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/luis/Android/Sdk/emulator:/home/luis/Android/Sdk/tools:/home/luis/Android/Sdk/tools/bin:/home/luis/Android/Sdk/platform-tools:/home/luis/Android/Sdk/emulator:/home/luis/Android/Sdk/tools:/home/luis/Android/Sdk/tools/bin:/home/luis/Android/Sdk/platform-tools:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin
+  /home/luis/.yarn/bin/bin:/home/luis/.nvm/versions/node/v14.17.1/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:/home/luis/.pyenv/shims:/home/luis/.pyenv/bin:Por favor, pergunte seu administrador.:/home/luis/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/luis/Android/Sdk/emulator:/home/luis/Android/Sdk/tools:/home/luis/Android/Sdk/tools/bin:/home/luis/Android/Sdk/platform-tools:/home/luis/Android/Sdk/emulator:/home/luis/Android/Sdk/tools:/home/luis/Android/Sdk/tools/bin:/home/luis/Android/Sdk/platform-tools:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin:/home/luis/chomper/bin
 
 Yarn version: 
   1.22.18
@@ -14,17 +14,8 @@ Platform:
   linux x64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/@types-jsonwebtoken: Request "https://registry.yarnpkg.com/@types-jsonwebtoken" returned a 405
-      at Request.params.callback [as _callback] (/home/luis/.nvm/versions/node/v14.17.1/lib/node_modules/yarn/lib/cli.js:66147:18)
-      at Request.self.callback (/home/luis/.nvm/versions/node/v14.17.1/lib/node_modules/yarn/lib/cli.js:140883:22)
-      at Request.emit (events.js:375:28)
-      at Request.<anonymous> (/home/luis/.nvm/versions/node/v14.17.1/lib/node_modules/yarn/lib/cli.js:141855:10)
-      at Request.emit (events.js:375:28)
-      at IncomingMessage.<anonymous> (/home/luis/.nvm/versions/node/v14.17.1/lib/node_modules/yarn/lib/cli.js:141777:12)
-      at Object.onceWrapper (events.js:481:28)
-      at IncomingMessage.emit (events.js:387:35)
-      at endReadableNT (internal/streams/readable.js:1317:12)
-      at processTicksAndRejections (internal/process/task_queues.js:82:21)
+  Error: getaddrinfo EAI_AGAIN registry.yarnpkg.com
+      at GetAddrInfoReqWrap.onlookup [as oncomplete] (dns.js:69:26)
 
 npm manifest: 
   {
@@ -36,6 +27,7 @@ npm manifest:
       "dev": "ts-node-dev --transpile-only --respawn --ignore-watch node_modules src/index.ts"
     },
     "dependencies": {
+      "@types/jsonwebtoken": "^8.5.8",
       "apollo-server": "^3.8.2",
       "bcrypt": "^5.0.1",
       "dotenv": "^16.0.1",
@@ -344,6 +336,13 @@ Lockfile:
       "@types/express-serve-static-core" "^4.17.18"
       "@types/qs" "*"
       "@types/serve-static" "*"
+  
+  "@types/jsonwebtoken@^8.5.8":
+    version "8.5.8"
+    resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-8.5.8.tgz#01b39711eb844777b7af1d1f2b4cf22fda1c0c44"
+    integrity sha512-zm6xBQpFDIDM6o9r6HSgDeIcLy82TKWctCXEPbJJcXb5AKmi5BNNdLXneixK4lplX3PqIVcwLBCGE/kAGnlD4A==
+    dependencies:
+      "@types/node" "*"
   
   "@types/long@^4.0.0":
     version "4.0.2"

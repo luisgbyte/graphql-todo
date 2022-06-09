@@ -1,4 +1,6 @@
+import { AuthenticationError, UserInputError } from 'apollo-server';
 import jwt from 'jsonwebtoken';
+import User from '../models/user';
 
 const createToken = async (user: any, secret: string, expiresIn: string) => {
   const { id, email, name } = user;
@@ -62,6 +64,29 @@ const user = {
         email,
         password,
       });
+
+      return { token: createToken(user, secret, '30m') };
+    },
+    //SIGN-IN
+    signIn: async (parent: any, { email, password }: any, { models, secret }: any) => {
+
+      const user = await models.User.findOne({
+        where: {
+          email: email,
+        },
+      });
+
+      if (!user) {
+        throw new UserInputError(
+          'No user found with this login credentials.',
+        );
+      }
+
+      const isValid = await User.validatePassword(user, password);
+
+      if (!isValid) {
+        throw new AuthenticationError('Invalid password.');
+      }
 
       return { token: createToken(user, secret, '30m') };
     },

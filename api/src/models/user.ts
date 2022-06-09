@@ -10,6 +10,7 @@ interface IUserAttributes {
   email: string
   password: string
   generatePasswordHash: () => void
+  validatePassword: () => boolean
 }
 
 @Table
@@ -45,6 +46,9 @@ class User extends Model<IUserAttributes>{
     instance.password = await bcrypt.hash(instance.password, saltRounds);
   };
 
+  static async validatePassword(instance: User, password: string) {
+    return await bcrypt.compare(password, instance.password);
+  };
 }
 
 export default User
