@@ -7,9 +7,12 @@
     "dev": "ts-node-dev --transpile-only --respawn --ignore-watch node_modules src/index.ts"
   },
   "dependencies": {
+    "@types/jsonwebtoken": "^8.5.8",
     "apollo-server": "^3.8.2",
+    "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "graphql": "^16.5.0",
+    "jsonwebtoken": "^8.5.1",
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",

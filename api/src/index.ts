@@ -1,4 +1,5 @@
 import { ApolloServer } from 'apollo-server';
+import 'dotenv/config';
 
 import typeDefs from './schema';
 import resolvers from './resolvers';
@@ -10,6 +11,7 @@ const server = new ApolloServer({
   resolvers,
   context: {
     models,
+    secret: process.env.SECRET,
   }
 });
 

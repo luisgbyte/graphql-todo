@@ -1,3 +1,13 @@
+import jwt from 'jsonwebtoken';
+
+const createToken = async (user: any, secret: string, expiresIn: string) => {
+  const { id, email, name } = user;
+
+  return await jwt.sign({ id, email, name }, secret, {
+    expiresIn,
+  });
+};
+
 const user = {
   Query: {
     // SHOW USER FOR ID
@@ -20,20 +30,6 @@ const user = {
     }
   },
   Mutation: {
-    // CREATE USER
-    createUser: async (_: any, args: any, { models }: any) => {
-      const { name, email, password } = args;
-
-      try {
-        return await models.User.create({
-          name,
-          email,
-          password,
-        });
-      } catch (error: any) {
-        throw new Error(error);
-      }
-    },
     // DELETE
     deleteUser: async (_: any, { id }: any, { models }: any) => {
       return await models.User.destroy({ where: { id } });
@@ -57,6 +53,17 @@ const user = {
       } catch (error: any) {
         throw new Error(error);
       }
+    },
+    // SIGN-UP
+    signUp: async (parent: any, { name, email, password }: any, { models, secret
+    }: any) => {
+      const user = await models.User.create({
+        name,
+        email,
+        password,
+      });
+
+      return { token: createToken(user, secret, '30m') };
     },
   },
 }

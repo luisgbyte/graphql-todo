@@ -1,4 +1,6 @@
-import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt } from 'sequelize-typescript'
+import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt, BeforeCreate } from 'sequelize-typescript'
+
+import bcrypt from 'bcrypt';
 
 import todo from './todo'
 
@@ -7,6 +9,7 @@ interface IUserAttributes {
   name: string
   email: string
   password: string
+  generatePasswordHash: () => void
 }
 
 @Table
@@ -35,6 +38,13 @@ class User extends Model<IUserAttributes>{
 
   @UpdatedAt
   updatedOn: Date;
+
+  @BeforeCreate
+  static generatePasswordHash = async (instance: User) => {
+    const saltRounds = 10;
+    instance.password = await bcrypt.hash(instance.password, saltRounds);
+  };
+
 }
 
 export default User
