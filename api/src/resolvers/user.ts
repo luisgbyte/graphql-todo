@@ -1,15 +1,23 @@
-
 const user = {
   Query: {
     // SHOW USER FOR ID
     user: async (parent: any, args: any, { models }: any) => {
       return await models.User.findByPk(args.id);
     },
-
     // SHOW ALL USERS
     users: async (parent: any, args: any, { models }: any) => {
       return await models.User.findAll();
     },
+  },
+  User: {
+    // LIST 'TODOS' IN USER
+    todo: async (parent: any, args: any, { models }: any) => {
+      return await models.Todo.findAll({
+        where: {
+          userId: parent.dataValues.id,
+        },
+      });
+    }
   },
   Mutation: {
     // CREATE USER
@@ -26,12 +34,10 @@ const user = {
         throw new Error(error);
       }
     },
-
     // DELETE
     deleteUser: async (_: any, { id }: any, { models }: any) => {
       return await models.User.destroy({ where: { id } });
     },
-
     // UPDATE
     updateUser: async (_: any, args: any, { models }: any) => {
       const { id, name, email, password } = args;
@@ -52,15 +58,6 @@ const user = {
         throw new Error(error);
       }
     },
-
-    // LIST ALL 'TODOS' FOR USERID
-    userTodo: async (_: any, { id }: any, { models }: any) => {
-      return await models.Todo.findAll({
-        where: {
-          userId: id,
-        },
-      });
-    }
   },
 }
 export default user

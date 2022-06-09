@@ -11,7 +11,7 @@ export default gql`
     name: String
     email: String
     password: String
-    todos: [Todo!] 
+    todo: [Todo!] 
   }
 
   type Mutation {

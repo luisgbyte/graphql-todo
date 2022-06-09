@@ -1,5 +1,4 @@
 import { Table, Column, Model, HasMany, PrimaryKey, AutoIncrement, CreatedAt, UpdatedAt } from 'sequelize-typescript'
-import isEmail from 'validator/lib/isEmail'
 
 import todo from './todo'
 

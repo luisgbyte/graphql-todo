@@ -6,6 +6,16 @@ const todo = {
       return await models.Todo.findAll();
     },
   },
+  Todo: {
+    // LIST 'USER' IN TODO
+    user: async (parent: any, args: any, { models }: any) => {
+      return await models.User.findOne({
+        where: {
+          id: parent.dataValues.userId,
+        },
+      });
+    }
+  },
   Mutation: {
     // CREATE
     createTodo: async (_: any, args: any, { models }: any) => {
@@ -21,12 +31,10 @@ const todo = {
         throw new Error(error);
       }
     },
-
     // DELETE
     deleteTodo: async (_: any, { id }: any, { models }: any) => {
       return await models.Todo.destroy({ where: { id } });
     },
-
     // UPDATE
     updateTodo: async (_: any, args: any, { models }: any) => {
       const { id, title, description } = args;

@@ -10,7 +10,7 @@ export default gql`
     title: String
     description: String
     completed: Boolean
-    user: User
+    user: User!
   }
 
   type Mutation {
