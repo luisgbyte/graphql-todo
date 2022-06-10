@@ -2,7 +2,7 @@ import { gql } from 'apollo-server';
 
 export default gql`
   type Query {
-    todos: [Todo]
+    todos(id: ID!, offset: Int, limit: Int): [Todo]
   }
 
   type Todo {

@@ -2,6 +2,17 @@ import { combineResolvers } from 'graphql-resolvers';
 import { isAuthenticated } from './authorization';
 
 const todo = {
+  Query: {
+    todos: combineResolvers(
+      isAuthenticated, async (parent: any, { id, offset = 0, limit = 100 }: any, { models }: any) => {
+
+        return await models.Todo.findAll({
+          offset,
+          limit,
+          where: { userId: id }
+        })
+      })
+  },
   Todo: {
     // LIST 'USER' IN TODO
     user: combineResolvers(isAuthenticated,
