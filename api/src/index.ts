@@ -8,8 +8,6 @@ import resolvers from './resolvers';
 
 import models, { sequelize } from './models';
 
-console.log(process.env.SECRET);
-
 const getMe = async (req: any) => {
   const token = req.headers['x-token'];
 

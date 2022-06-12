@@ -2,9 +2,9 @@ import { gql } from 'apollo-server';
 
 export default gql`
   type User {
-    id: ID
-    name: String
-    email: String
+    id: ID!
+    name: String!
+    email: String!
     password: String
     todo: [Todo!] 
   }
@@ -14,8 +14,8 @@ export default gql`
   }
 
   type Mutation {
-    deleteUser(id: ID!): User
-    updateUser(id: ID!, name: String, email: String, password: String): User
+    deleteUser: Boolean!
+    updateUser(name: String, email: String, password: String): User
     signUp(name: String!, email: String!, password: String!): Token!
     signIn(email: String!, password: String!): Token!
   }

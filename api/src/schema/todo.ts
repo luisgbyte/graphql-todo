@@ -2,7 +2,7 @@ import { gql } from 'apollo-server';
 
 export default gql`
   type Query {
-    todos(id: ID!, offset: Int, limit: Int): [Todo]
+    todos(offset: Int, limit: Int): [Todo]
   }
 
   type Todo {
@@ -14,8 +14,8 @@ export default gql`
   }
 
   type Mutation {
-    createTodo(title: String, description: String, userId: ID!): Todo!
-    deleteTodo(id: ID!): Todo
+    createTodo(title: String!, description: String!): Todo!
+    deleteTodo(id: ID!): Boolean!
     updateTodo(id: ID!, title: String, description: String, completed: Boolean): Todo
   }
 `;

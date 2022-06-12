@@ -4,22 +4,22 @@ import { isAuthenticated } from './authorization';
 const todo = {
   Query: {
     todos: combineResolvers(
-      isAuthenticated, async (parent: any, { id, offset = 0, limit = 100 }: any, { models }: any) => {
+      isAuthenticated, async (parent: any, { offset = 0, limit = 100 }: any, { models, me }: any) => {
 
         return await models.Todo.findAll({
           offset,
           limit,
-          where: { userId: id }
+          where: { userId: me.id }
         })
       })
   },
   Todo: {
     // LIST 'USER' IN TODO
     user: combineResolvers(isAuthenticated,
-      async (parent: any, args: any, { models }: any) => {
+      async (parent: any, _: any, { models, me }: any) => {
         return await models.User.findOne({
           where: {
-            id: parent.dataValues.userId,
+            id: me.id,
           },
         });
       })
@@ -27,15 +27,16 @@ const todo = {
   Mutation: {
     // CREATE
     createTodo: combineResolvers(isAuthenticated,
-      async (_: any, args: any, { models }: any) => {
-        const { title, description, userId } = args;
+      async (_: any, args: any, { models, me }: any) => {
+        const { title, description } = args;
 
         try {
           return await models.Todo.create({
             title,
             description,
-            userId,
+            userId: me.id,
           });
+
         } catch (error: any) {
           throw new Error(error);
         }
@@ -47,20 +48,28 @@ const todo = {
       }),
     // UPDATE
     updateTodo: combineResolvers(isAuthenticated,
-      async (_: any, args: any, { models }: any) => {
-        const { id, title, description } = args;
+      async (_: any, args: any, { models, me }: any) => {
+        const { id, title, description, completed } = args;
+
+        const oldTodo = await models.Todo.findByPk(id);
+
+        if (oldTodo === null || me.id !== oldTodo.userId) {
+          throw new Error("An error occurred in the operation! Permission denied or task does not exist.");
+        }
 
         try {
           await models.Todo.update({
             title,
             description,
+            completed
           }, {
             where: {
               id: id
             }
           });
 
-          return { ...args }
+          return await models.Todo.findByPk(id);
+
         } catch (error: any) {
           throw new Error(error);
         }

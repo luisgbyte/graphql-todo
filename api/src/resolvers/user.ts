@@ -29,26 +29,27 @@ const user = {
   Mutation: {
     // DELETE
     deleteUser: combineResolvers(isAuthenticated,
-      async (_: any, { id }: any, { models }: any) => {
-        return await models.User.destroy({ where: { id } });
+      async (_: any, args: any, { models, me }: any) => {
+        return await models.User.destroy({ where: { id: me.id } })
       }),
     // UPDATE
     updateUser: combineResolvers(isAuthenticated,
-      async (_: any, args: any, { models }: any) => {
-        const { id, name, email, password } = args;
-
+      async (_: any, args: any, { models, me }: any) => {
         try {
           await models.User.update({
-            name,
-            email,
-            password,
+            ...args
           }, {
             where: {
-              id: id
+              id: me.id
             }
-          });
+          })
 
-          return { ...args }
+          return models.User.findByPk(me.id, {
+            attributes: {
+              exclude: ['password']
+            }
+          })
+
         } catch (error: any) {
           throw new Error(error);
         }
